@@ -38,6 +38,8 @@
 #![warn(rust_2018_idioms)]
 #![cfg_attr(feature = "nightly", warn(fuzzy_provenance_casts))]
 
+#![feature(type_alias_impl_trait)]
+
 #[cfg(test)]
 #[macro_use]
 extern crate std;

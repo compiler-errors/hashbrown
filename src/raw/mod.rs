@@ -1546,6 +1546,8 @@ impl<A> RawTableInner<A> {
     }
 }
 
+type ResizeFn<A: Allocator + Clone> = impl FnMut(&mut RawTableInner<A>);
+
 impl<A: Allocator + Clone> RawTableInner<A> {
     /// Allocates a new [`RawTableInner`] with the given number of buckets.
     /// The control bytes and buckets are left uninitialized.
@@ -2148,7 +2150,7 @@ impl<A: Allocator + Clone> RawTableInner<A> {
         table_layout: TableLayout,
         capacity: usize,
         fallibility: Fallibility,
-    ) -> Result<crate::scopeguard::ScopeGuard<Self, impl FnMut(&mut Self)>, TryReserveError> {
+    ) -> Result<crate::scopeguard::ScopeGuard<Self, ResizeFn<A>>, TryReserveError> {
         debug_assert!(self.items <= capacity);
 
         // Allocate and initialize the new table.
